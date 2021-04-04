@@ -57,8 +57,18 @@ connection.onCompletion(
                 ? CompletionItemKind.Folder
                 : CompletionItemKind.File;
 
+            var name = file.name;
+
+            const removeDot =
+                name.charAt(0) === "." &&
+                text !== "" &&
+                text?.charAt(0) === ".";
+
+            var insertText = removeDot ? name.substr(1) : name;
+
             items.push({
-                label: file.name,
+                label: name,
+                insertText: insertText,
                 kind: kind,
             });
         });
