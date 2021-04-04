@@ -3,7 +3,14 @@
 </p>
 <h1 align="center">Gitignore Ultimate</h1>
 
+<p align="center">
+<a src="https://marketplace.visualstudio.com/items?itemName=quentinguidee.gitignore-ultimate&ssr=false#overview"><img alt="Visual Studio Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/quentinguidee.gitignore-ultimate?style=for-the-badge&color=red&logo=visual-studio-code"></a>
+<img alt="GitHub" src="https://img.shields.io/github/license/quentinguidee/gitignore-ultimate?style=for-the-badge&color=red&logo=open-source-initiative&logoColor=white">
+</p>
+
 ---
+
+Ultimate extensions are a group of extensions allowing faster coding in VSCode. Gitignore Ultimate allows to speed up the drafting of `.gitignore` files.
 
 ## Features
 
