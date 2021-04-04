@@ -3,14 +3,14 @@ import * as path from "path";
 import { existsSync, writeFile, appendFile } from "fs";
 
 export function createGitignoreFile(uri: vscode.Uri) {
-    const gitignorePath = path.join(uri.path + ".gitignore");
+    const gitignorePath = path.join(uri.path, ".gitignore");
 
     if (existsSync(gitignorePath)) {
         vscode.window.showInformationMessage(
             "A .gitignore file already exists."
         );
     } else {
-        writeFile(uri.fsPath, "", () => {
+        writeFile(gitignorePath, "", () => {
             vscode.workspace
                 .openTextDocument(gitignorePath)
                 .then((textDocument) => {
