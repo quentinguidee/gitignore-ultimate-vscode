@@ -11,10 +11,27 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onLanguage:ignore"
+        "onLanguage:ignore",
+        "onCommand:gitignore-ultimate.create-gitignore"
     ],
     "main": "./client/out/extension",
-    "contributes": {},
+    "contributes": {
+        "commands": [
+            {
+                "title": "Create .gitignore",
+                "command": "gitignore-ultimate.create-gitignore"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "when": "explorerResourceIsFolder",
+                    "command": "gitignore-ultimate.create-gitignore",
+                    "group": "gitignore-ultimate-files"
+                }
+            ]
+        }
+    },
     "scripts": {
         "vscode:prepublish": "yarn run compile",
         "compile": "tsc -b",

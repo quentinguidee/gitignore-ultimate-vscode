@@ -5,6 +5,7 @@ import {
     LanguageClientOptions,
     TransportKind,
 } from "vscode-languageclient/node";
+import { createGitignoreFile } from "./features/commands";
 
 let defaultClient: LanguageClient;
 let clients: Map<string, LanguageClient> = new Map();
@@ -148,6 +149,11 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }
     });
+
+    vscode.commands.registerCommand(
+        "gitignore-ultimate.create-gitignore",
+        createGitignoreFile
+    );
 }
 
 export function deactivate(): Thenable<void> {
