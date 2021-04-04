@@ -1,19 +1,36 @@
 import * as vscode from "vscode";
-import { existsSync, writeFile } from "fs";
+import * as path from "path";
+import { existsSync, writeFile, appendFile } from "fs";
 
-export function createGitignoreFile(context: any) {
-    const path = context.path + "/.gitignore";
-    const uri = vscode.Uri.file(path);
+export function createGitignoreFile(uri: vscode.Uri) {
+    const gitignorePath = path.join(uri.path + ".gitignore");
 
-    if (existsSync(path)) {
+    if (existsSync(gitignorePath)) {
         vscode.window.showInformationMessage(
             "A .gitignore file already exists."
         );
     } else {
         writeFile(uri.fsPath, "", () => {
-            vscode.workspace.openTextDocument(path).then((textDocument) => {
-                vscode.window.showTextDocument(textDocument);
-            });
+            vscode.workspace
+                .openTextDocument(gitignorePath)
+                .then((textDocument) => {
+                    vscode.window.showTextDocument(textDocument);
+                });
         });
     }
+}
+
+export function addFileToGitignore(uri: vscode.Uri) {
+    const root = vscode.workspace.getWorkspaceFolder(uri);
+    const fileToAdd = path.relative(root!.uri.fsPath, uri.fsPath);
+    const gitignorePath = path.join(root!.uri.fsPath, ".gitignore");
+    const gitignoreFile = vscode.Uri.file(gitignorePath);
+
+    appendFile(gitignoreFile.fsPath, "\n" + fileToAdd, () => {
+        vscode.workspace
+            .openTextDocument(gitignoreFile)
+            .then((textDocument) => {
+                vscode.window.showTextDocument(textDocument);
+            });
+    });
 }

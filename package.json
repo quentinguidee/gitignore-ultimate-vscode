@@ -12,7 +12,8 @@
     ],
     "activationEvents": [
         "onLanguage:ignore",
-        "onCommand:gitignore-ultimate.create-gitignore"
+        "onCommand:gitignore-ultimate.create-gitignore",
+        "onCommand:gitignore-ultimate.add-to-gitignore"
     ],
     "main": "./client/out/extension",
     "contributes": {
@@ -20,6 +21,10 @@
             {
                 "title": "Create .gitignore",
                 "command": "gitignore-ultimate.create-gitignore"
+            },
+            {
+                "title": "Add to .gitignore",
+                "command": "gitignore-ultimate.add-to-gitignore"
             }
         ],
         "menus": {
@@ -28,6 +33,10 @@
                     "when": "explorerResourceIsFolder",
                     "command": "gitignore-ultimate.create-gitignore",
                     "group": "gitignore-ultimate-files"
+                },
+                {
+                    "command": "gitignore-ultimate.add-to-gitignore",
+                    "group": "gitignore-ultimate-add-to-gitignore"
                 }
             ]
         }
