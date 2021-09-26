@@ -2,21 +2,28 @@ import {
     createConnection,
     TextDocuments,
     ProposedFeatures,
-    TextDocumentSyncKind,
     TextDocumentPositionParams,
     CompletionItem,
     CompletionItemKind,
     InitializeParams,
-    Position,
     Range,
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
+import { URI } from "vscode-uri";
 
-import * as fs from "fs";
+import { Dirent, readdir } from "fs";
+import { join } from "path";
 
 const connection = createConnection(ProposedFeatures.all);
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-let documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
+let workspaceFolder: string | null;
+
+// documents.onDidOpen((e) => {
+//     connection.console.log(
+//         `[Server(${process.pid}) ${workspaceFolder}] Document opened: ${e.document.uri}`
+//     );
+// });
 
 documents.listen(connection);
 
@@ -25,56 +32,83 @@ connection.onInitialize((params: InitializeParams) => {
         `[GITIGNORE_ULTIMATE] [SERVER-${process.pid}] onInitialize triggered`
     );
 
+    workspaceFolder = params.rootUri;
+
     return {
         capabilities: {
             completionProvider: {
                 triggerCharacters: ["/"],
+            },
+            workspace: {
+                workspaceFolders: {
+                    supported: true,
+                    changeNotifications: true,
+                },
             },
         },
     };
 });
 
 connection.onCompletion(
-    (textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
-        let document = documents.get(textDocumentPosition.textDocument.uri);
-        let position = textDocumentPosition.position;
-        let text = document?.getText(
-            Range.create(position.line, 0, position.line, position.character)
-        );
+    async (
+        textDocumentPosition: TextDocumentPositionParams
+    ): Promise<CompletionItem[]> =>
+        new Promise((resolve, reject) => {
+            let document = documents.get(textDocumentPosition.textDocument.uri);
+            let position = textDocumentPosition.position;
+            let text = document?.getText(
+                Range.create(
+                    position.line,
+                    0,
+                    position.line,
+                    position.character
+                )
+            );
 
-        let lastSlashPosition = text?.lastIndexOf("/");
+            let lastSlashPosition = text?.lastIndexOf("/");
 
-        var path = "";
-        if (lastSlashPosition !== -1) {
-            path = text?.substr(0, lastSlashPosition) || "";
-        }
+            var path = workspaceFolder!;
+            if (lastSlashPosition !== -1) {
+                path = join(path, text?.substr(0, lastSlashPosition) || "");
+            }
 
-        var items: CompletionItem[] = [];
-        var files = fs.readdirSync("./" + path, { withFileTypes: true });
+            var items: CompletionItem[] = [];
 
-        files.forEach((file) => {
-            var kind = file.isDirectory()
-                ? CompletionItemKind.Folder
-                : CompletionItemKind.File;
+            const getFilesAndFolders = (err: any, files: Dirent[]) => {
+                if (err) {
+                    reject(err);
+                }
 
-            var name = file.name;
+                files.forEach((file) => {
+                    var kind = file.isDirectory()
+                        ? CompletionItemKind.Folder
+                        : CompletionItemKind.File;
 
-            const removeDot =
-                name.charAt(0) === "." &&
-                text !== "" &&
-                text?.charAt(0) === ".";
+                    var name = file.name;
 
-            var insertText = removeDot ? name.substr(1) : name;
+                    const removeDot =
+                        name.charAt(0) === "." &&
+                        text !== "" &&
+                        text?.charAt(0) === ".";
 
-            items.push({
-                label: name,
-                insertText: insertText,
-                kind: kind,
-            });
-        });
+                    var insertText = removeDot ? name.substr(1) : name;
 
-        return items;
-    }
+                    items.push({
+                        label: name,
+                        insertText: insertText,
+                        kind: kind,
+                    });
+                });
+
+                resolve(items);
+            };
+
+            readdir(
+                URI.parse(path).fsPath,
+                { withFileTypes: true },
+                getFilesAndFolders
+            );
+        })
 );
 
 connection.listen();

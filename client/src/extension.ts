@@ -1,11 +1,22 @@
 import * as vscode from "vscode";
 import * as path from "path";
+
+import { addFileToGitignore, createGitignoreFile } from "./features/commands";
+import {
+    commands,
+    workspace,
+    window,
+    WorkspaceFolder,
+    ExtensionContext,
+    Uri,
+    OutputChannel,
+    TextDocument,
+} from "vscode";
 import {
     LanguageClient,
     LanguageClientOptions,
     TransportKind,
 } from "vscode-languageclient/node";
-import { addFileToGitignore, createGitignoreFile } from "./features/commands";
 
 let defaultClient: LanguageClient;
 let clients: Map<string, LanguageClient> = new Map();
@@ -13,8 +24,8 @@ let clients: Map<string, LanguageClient> = new Map();
 let _sortedWorkspaceFolders: string[] | undefined;
 function sortedWorkspaceFolders(): string[] {
     if (_sortedWorkspaceFolders === void 0) {
-        _sortedWorkspaceFolders = vscode.workspace.workspaceFolders
-            ? vscode.workspace.workspaceFolders
+        _sortedWorkspaceFolders = workspace.workspaceFolders
+            ? workspace.workspaceFolders
                   .map((folder) => {
                       let result = folder.uri.toString();
                       if (result.charAt(result.length - 1) !== "/") {
@@ -30,40 +41,36 @@ function sortedWorkspaceFolders(): string[] {
 
     return _sortedWorkspaceFolders;
 }
-vscode.workspace.onDidChangeWorkspaceFolders(
-    () => (_sortedWorkspaceFolders = undefined)
-);
 
-function getOuterMostWorkspaceFolder(
-    folder: vscode.WorkspaceFolder
-): vscode.WorkspaceFolder {
+workspace.onDidChangeWorkspaceFolders(() => {
+    _sortedWorkspaceFolders = undefined;
+});
+
+function getOuterMostWorkspaceFolder(folder: WorkspaceFolder): WorkspaceFolder {
     let sorted = sortedWorkspaceFolders();
     for (let element of sorted) {
         let uri = folder.uri.toString();
         if (uri.charAt(uri.length - 1) !== "/") {
-            uri = uri + "/";
+            uri += "/";
         }
         if (uri.startsWith(element)) {
-            return vscode.workspace.getWorkspaceFolder(
-                vscode.Uri.parse(element)
-            )!;
+            return workspace.getWorkspaceFolder(Uri.parse(element))!;
         }
     }
     return folder;
 }
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
     console.log("Extension gitignore-ultimate active!");
 
-    let module = context.asAbsolutePath(
+    const module = context.asAbsolutePath(
         path.join("server", "out", "server.js")
     );
 
-    let outputChannel: vscode.OutputChannel = vscode.window.createOutputChannel(
-        "Gitignore Ultimate"
-    );
+    const outputChannel: OutputChannel =
+        window.createOutputChannel("Gitignore Ultimate");
 
-    function didOpenTextDocument(document: vscode.TextDocument): void {
+    function didOpenTextDocument(document: TextDocument): void {
         console.log("[GITIGNORE_ULTIMATE] LanguageID: " + document.languageId);
 
         if (document.languageId !== "ignore") {
@@ -71,10 +78,12 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        if (!defaultClient) {
+        const uri = document.uri;
+
+        if (uri.scheme === "untitled" && !defaultClient) {
             console.log("[GITIGNORE_ULTIMATE] Create default client.");
-            let debugOptions = { execArgv: ["--nolazy", "--inspect=6010"] };
-            let serverOptions = {
+            const debugOptions = { execArgv: ["--nolazy", "--inspect=6010"] };
+            const serverOptions = {
                 run: { module, transport: TransportKind.ipc },
                 debug: {
                     module,
@@ -82,7 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
                     options: debugOptions,
                 },
             };
-            let clientOptions: LanguageClientOptions = {
+            const clientOptions: LanguageClientOptions = {
                 documentSelector: [{ language: "ignore" }],
                 diagnosticCollectionName: "Gitignore Ultimate",
                 outputChannel: outputChannel,
@@ -97,12 +106,14 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        let uri = document.uri;
-        let folder = vscode.workspace.getWorkspaceFolder(uri);
+        let folder = workspace.getWorkspaceFolder(uri);
         if (!folder) {
             return;
         }
+
         folder = getOuterMostWorkspaceFolder(folder);
+
+        console.log(folder.uri.toString());
 
         if (!clients.has(folder.uri.toString())) {
             let debugOptions = {
@@ -138,11 +149,11 @@ export function activate(context: vscode.ExtensionContext) {
         }
     }
 
-    vscode.workspace.onDidOpenTextDocument(didOpenTextDocument);
-    vscode.workspace.textDocuments.forEach(didOpenTextDocument);
-    vscode.workspace.onDidChangeWorkspaceFolders((event) => {
-        for (let folder of event.removed) {
-            let client = clients.get(folder.uri.toString());
+    workspace.onDidOpenTextDocument(didOpenTextDocument);
+    workspace.textDocuments.forEach(didOpenTextDocument);
+    workspace.onDidChangeWorkspaceFolders((event) => {
+        for (const folder of event.removed) {
+            const client = clients.get(folder.uri.toString());
             if (client) {
                 clients.delete(folder.uri.toString());
                 client.stop();
@@ -150,12 +161,12 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    vscode.commands.registerCommand(
+    commands.registerCommand(
         "gitignore-ultimate.create-gitignore",
         createGitignoreFile
     );
 
-    vscode.commands.registerCommand(
+    commands.registerCommand(
         "gitignore-ultimate.add-to-gitignore",
         addFileToGitignore
     );
@@ -164,11 +175,11 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate(): Thenable<void> {
     console.log("[GITIGNORE_ULTIMATE] deactivate()");
 
-    let promises: Thenable<void>[] = [];
+    const promises: Thenable<void>[] = [];
     if (defaultClient) {
         promises.push(defaultClient.stop());
     }
-    for (let client of clients.values()) {
+    for (const client of clients.values()) {
         promises.push(client.stop());
     }
     return Promise.all(promises).then(() => undefined);
