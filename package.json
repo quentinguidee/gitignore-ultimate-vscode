@@ -3,7 +3,7 @@
     "displayName": "Gitignore Ultimate",
     "description": "Gitignore autocompletion",
     "publisher": "quentinguidee",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "preview": true,
     "engines": {
         "vscode": "^1.46.0"
