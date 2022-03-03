@@ -65,15 +65,23 @@ connection.onCompletion(
 
             let lastSlashPosition = currentPath?.lastIndexOf("/");
 
-            var path = workspaceFolder!;
-            if (lastSlashPosition !== -1) {
-                path = join(
-                    path,
-                    currentPath?.substr(0, lastSlashPosition) || ""
+            let directory = workspaceFolder!;
+            let currentCompletion = currentPath;
+
+            if (lastSlashPosition && lastSlashPosition !== -1) {
+                directory = join(
+                    directory,
+                    currentPath?.substring(0, lastSlashPosition) || ""
                 );
+
+                if (currentPath && currentPath.length > lastSlashPosition) {
+                    currentCompletion = currentPath.substring(
+                        lastSlashPosition + 1
+                    );
+                }
             }
 
-            completionSuggestionsFor(path)
+            completionSuggestionsFor(directory, currentCompletion)
                 .then((items) => resolve(items))
                 .catch((error) => reject(error));
         });

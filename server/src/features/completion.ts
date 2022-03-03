@@ -22,7 +22,8 @@ export function getFilesInDirectory(directory?: string): Promise<Dirent[]> {
 }
 
 export async function completionSuggestionsFor(
-    directory?: string
+    directory?: string,
+    currentCompletion?: string
 ): Promise<CompletionItem[]> {
     return new Promise((resolve, reject) => {
         getFilesInDirectory(directory)
@@ -40,12 +41,11 @@ export async function completionSuggestionsFor(
 
                     var filename = file.name;
 
-                    const removeDot =
-                        filename.charAt(0) === "." &&
-                        directory !== "" &&
-                        directory?.charAt(0) === ".";
+                    const removeDot = currentCompletion?.charAt(0) === ".";
 
-                    var insertText = removeDot ? filename.substr(1) : filename;
+                    var insertText = removeDot
+                        ? filename.substring(1)
+                        : filename;
 
                     completionItems.push({
                         label: filename,
