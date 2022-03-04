@@ -12,11 +12,7 @@ import {
     OutputChannel,
     TextDocument,
 } from "vscode";
-import {
-    LanguageClient,
-    LanguageClientOptions,
-    TransportKind,
-} from "vscode-languageclient/node";
+import { LanguageClient, LanguageClientOptions, TransportKind } from "vscode-languageclient/node";
 
 let defaultClient: LanguageClient;
 let clients: Map<string, LanguageClient> = new Map();
@@ -63,12 +59,9 @@ function getOuterMostWorkspaceFolder(folder: WorkspaceFolder): WorkspaceFolder {
 export function activate(context: ExtensionContext) {
     console.log("Extension gitignore-ultimate active!");
 
-    const module = context.asAbsolutePath(
-        path.join("server", "out", "server.js")
-    );
+    const module = context.asAbsolutePath(path.join("server", "out", "server.js"));
 
-    const outputChannel: OutputChannel =
-        window.createOutputChannel("Gitignore Ultimate");
+    const outputChannel: OutputChannel = window.createOutputChannel("Gitignore Ultimate");
 
     function didOpenTextDocument(document: TextDocument): void {
         console.log("[GITIGNORE_ULTIMATE] LanguageID: " + document.languageId);
@@ -161,15 +154,9 @@ export function activate(context: ExtensionContext) {
         }
     });
 
-    commands.registerCommand(
-        "gitignore-ultimate.create-gitignore",
-        createGitignoreFile
-    );
+    commands.registerCommand("gitignore-ultimate.create-gitignore", createGitignoreFile);
 
-    commands.registerCommand(
-        "gitignore-ultimate.add-to-gitignore",
-        addFileToGitignore
-    );
+    commands.registerCommand("gitignore-ultimate.add-to-gitignore", addFileToGitignore);
 }
 
 export function deactivate(): Thenable<void> {

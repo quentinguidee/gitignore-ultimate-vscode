@@ -8,16 +8,12 @@ export function getFilesInDirectory(directory?: string): Promise<Dirent[]> {
             reject();
         }
 
-        readdir(
-            URI.parse(directory!).fsPath,
-            { withFileTypes: true },
-            (err, files) => {
-                if (err) {
-                    reject(err);
-                }
-                resolve(files);
+        readdir(URI.parse(directory!).fsPath, { withFileTypes: true }, (err, files) => {
+            if (err) {
+                reject(err);
             }
-        );
+            resolve(files);
+        });
     });
 }
 
@@ -35,17 +31,13 @@ export async function completionSuggestionsFor(
                 var completionItems: CompletionItem[] = [];
 
                 files.forEach((file) => {
-                    var kind = file.isDirectory()
-                        ? CompletionItemKind.Folder
-                        : CompletionItemKind.File;
+                    var kind = file.isDirectory() ? CompletionItemKind.Folder : CompletionItemKind.File;
 
                     var filename = file.name;
 
                     const removeDot = currentCompletion?.charAt(0) === ".";
 
-                    var insertText = removeDot
-                        ? filename.substring(1)
-                        : filename;
+                    var insertText = removeDot ? filename.substring(1) : filename;
 
                     completionItems.push({
                         label: filename,
