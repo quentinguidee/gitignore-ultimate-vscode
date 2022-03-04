@@ -33,11 +33,11 @@
     "contributes": {
         "commands": [
             {
-                "title": "Create .gitignore",
+                "title": "[Git] Create .gitignore",
                 "command": "gitignore-ultimate.create-gitignore"
             },
             {
-                "title": "Add to .gitignore",
+                "title": "[Git] Add to .gitignore",
                 "command": "gitignore-ultimate.add-to-gitignore"
             }
         ],
