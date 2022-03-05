@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7] - 2022-03-03
+
+- Fix dots files completion
+
+## [0.1.6] - 2022-03-03
+
+- Fix crash when completing a file
+
 ## [0.1.5] - 2021-09-26
 
 - Fix autocompletion
