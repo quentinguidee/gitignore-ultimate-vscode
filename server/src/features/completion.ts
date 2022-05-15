@@ -5,7 +5,11 @@ import { URI } from "vscode-uri";
 export function getFilesInDirectory(directory?: string): Promise<Dirent[]> {
     return new Promise((resolve, reject) => {
         if (!directory) {
-            reject();
+            reject("Directory is undefined.");
+        }
+
+        if (process.platform === "win32") {
+            directory = directory!.replace(/\\/g, "/");
         }
 
         readdir(URI.parse(directory!).fsPath, { withFileTypes: true }, (err, files) => {
@@ -28,6 +32,11 @@ export async function completionSuggestionsFor(
                     directory = "";
                 }
 
+                if (!files) {
+                    console.error("Files is undefined.");
+                    resolve([]);
+                }
+
                 var completionItems: CompletionItem[] = [];
 
                 files.forEach((file) => {
@@ -48,6 +57,9 @@ export async function completionSuggestionsFor(
 
                 resolve(completionItems);
             })
-            .catch(() => resolve([]));
+            .catch((e) => {
+                console.error(e);
+                resolve([]);
+            });
     });
 }
