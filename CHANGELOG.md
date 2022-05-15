@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.8] - 2022-05-15
+
+- Fix Windows completion in folders
+
 ## [0.1.7] - 2022-03-03
 
 - Fix dots files completion
