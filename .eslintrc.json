@@ -11,8 +11,7 @@
     "rules": {
         "@typescript-eslint/naming-convention": "warn",
         "@typescript-eslint/semi": "warn",
-        "curly": "warn",
-        "eqeqeq": "warn",
+        "curly": "off",
         "no-throw-literal": "warn",
         "semi": "off"
     },
