@@ -1,70 +1,49 @@
-# gitignore-ultimate README
+<p align="center">
+    <img width="256" height="256" src="https://github.com/quentinguidee/gitignore-ultimate/raw/master/icon-1024.png" />
+</p>
+<h1 align="center">Gitignore Ultimate</h1>
 
-This is the README for your extension "gitignore-ultimate". After writing up a brief description, we recommend including the following sections.
+<p align="center">
+<a src="https://marketplace.visualstudio.com/items?itemName=quentinguidee.gitignore-ultimate&ssr=false#overview"><img alt="Visual Studio Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/quentinguidee.gitignore-ultimate?style=for-the-badge&color=red&logo=visual-studio-code"></a>
+<img alt="GitHub" src="https://img.shields.io/github/license/quentinguidee/gitignore-ultimate?style=for-the-badge&color=red&logo=open-source-initiative&logoColor=white">
+</p>
+
+---
+
+| ⚠️   | This branch is a complete rewrite of the old extension. Consider switching to the [master branch](https://github.com/quentinguidee/gitignore-ultimate/tree/master) if you want to take a look at the extension as it is currently available on the Marketplace. |
+| --- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+
+Ultimate extensions are a group of extensions allowing faster coding in VSCode. Gitignore Ultimate allows to speed up the drafting of `.gitignore` files.
+
+## About this new version
+
+With Gitignore Ultimate 0.2.0, the server is now coded in Rust instead of TypeScript. The server is available [here](https://github.com/quentinguidee/gitignore-ultimate-server).
+
+To-Do :
+
+- [ ] Rust server automatic installation with VSCode alert.
+
+Features to develop again:
+
+- [x] Autocomplete files and folders
+- [ ] Add file/folder to gitignore
+- [ ] Create `.gitignore` file
+- [ ] Multiple workspaces support
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Autocomplete gitignore files
 
-For example if there is an image subfolder under your extension project workspace:
+![autocomplete](https://user-images.githubusercontent.com/12123721/113505778-4bad6600-9541-11eb-9f3e-a64c63983b95.gif)
 
-\!\[feature X\]\(images/feature-x.png\)
+- Add file/folder to gitignore
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+<img width="274" alt="image" src="https://user-images.githubusercontent.com/12123721/113505947-266d2780-9542-11eb-9139-c9676746b594.png">
 
-## Requirements
+- Create `.gitignore` file
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+<img width="290" alt="image" src="https://user-images.githubusercontent.com/12123721/113505935-148b8480-9542-11eb-9c27-2862e5af6092.png">
 
-## Extension Settings
+## License
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- This extension is released under the [MIT License](./LICENSE.md)
