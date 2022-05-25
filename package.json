@@ -1,17 +1,25 @@
 {
     "name": "gitignore-ultimate",
-    "displayName": "gitignore-ultimate",
+    "displayName": "Gitignore Ultimate",
     "description": "Gitignore Ultimate (client)",
-    "version": "0.0.0",
+    "version": "0.2.0",
     "engines": {
         "vscode": "^1.67.0"
     },
     "license": "MIT",
     "categories": [
-        "Other"
+        "Programming Languages"
     ],
     "activationEvents": [
         "onLanguage:ignore"
+    ],
+    "keywords": [
+        "git",
+        "gitignore",
+        "autocomplete",
+        "autocompletion",
+        "intellisense",
+        "path"
     ],
     "main": "./out/extension.js",
     "contributes": {},
