@@ -1,11 +1,13 @@
 {
     "name": "gitignore-ultimate",
     "displayName": "Gitignore Ultimate",
-    "description": "Gitignore Ultimate (client)",
+    "description": "Your favorite companion to edit gitignore files.",
     "version": "0.2.0",
+    "preview": true,
     "engines": {
         "vscode": "^1.67.0"
     },
+    "publisher": "quentinguidee",
     "license": "MIT",
     "categories": [
         "Programming Languages"
@@ -21,6 +23,12 @@
         "intellisense",
         "path"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/quentinguidee/gitignore-ultimate-vscode"
+    },
+    "homepage": "https://github.com/quentinguidee/gitignore-ultimate",
+    "icon": "icon.png",
     "main": "./out/extension.js",
     "contributes": {},
     "scripts": {
