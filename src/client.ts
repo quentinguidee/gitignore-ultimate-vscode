@@ -3,6 +3,8 @@ import {
     ServerOptions,
     LanguageClientOptions as ClientOptions,
 } from "vscode-languageclient/node";
+import { join } from "path";
+import { ExtensionContext } from "vscode";
 
 const clientOptions: ClientOptions = {
     documentSelector: [
@@ -13,15 +15,19 @@ const clientOptions: ClientOptions = {
     ],
 };
 
-const serverOptions: ServerOptions = {
-    command: "gitignore_ultimate_server",
-};
+function getServerOptions(context: ExtensionContext): ServerOptions {
+    return {
+        command: context.asAbsolutePath(
+            join("bin", "gitignore_ultimate_server")
+        ),
+    };
+}
 
-export function createClient(): LanguageClient {
+export function createClient(context: ExtensionContext): LanguageClient {
     return new LanguageClient(
         "gitignore-ultimate-server",
         "GitIgnore Ultimate Server",
-        serverOptions,
+        getServerOptions(context),
         clientOptions
     );
 }
