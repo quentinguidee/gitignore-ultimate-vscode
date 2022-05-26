@@ -16,10 +16,11 @@ const clientOptions: ClientOptions = {
 };
 
 function getServerOptions(context: ExtensionContext): ServerOptions {
+    let executableName = "gitignore_ultimate_server";
+    if (process.platform === "win32") executableName += ".exe";
+
     return {
-        command: context.asAbsolutePath(
-            join("bin", "gitignore_ultimate_server")
-        ),
+        command: context.asAbsolutePath(join("bin", executableName)),
     };
 }
 
