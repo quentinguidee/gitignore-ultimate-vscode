@@ -18,9 +18,6 @@ on:
         required: false
         type: boolean
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
   package:
     name: Package (${{ matrix.name }})
