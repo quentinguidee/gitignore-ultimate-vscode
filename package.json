@@ -12,9 +12,6 @@
     "categories": [
         "Programming Languages"
     ],
-    "activationEvents": [
-        "onLanguage:ignore"
-    ],
     "keywords": [
         "git",
         "gitignore",
@@ -30,7 +27,36 @@
     "homepage": "https://github.com/quentinguidee/gitignore-ultimate",
     "icon": "icon.png",
     "main": "./out/extension.js",
-    "contributes": {},
+    "activationEvents": [
+        "onLanguage:ignore",
+        "onCommand:gitignore-ultimate.create-gitignore",
+        "onCommand:gitignore-ultimate.add-to-gitignore"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "title": "[Git] Create .gitignore",
+                "command": "gitignore-ultimate.create-gitignore"
+            },
+            {
+                "title": "[Git] Add to .gitignore",
+                "command": "gitignore-ultimate.add-to-gitignore"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "when": "explorerResourceIsFolder",
+                    "command": "gitignore-ultimate.create-gitignore",
+                    "group": "gitignore-ultimate-files"
+                },
+                {
+                    "command": "gitignore-ultimate.add-to-gitignore",
+                    "group": "gitignore-ultimate-files"
+                }
+            ]
+        }
+    },
     "scripts": {
         "vscode:prepublish": "yarn run compile",
         "compile": "tsc -p ./",
