@@ -1,8 +1,22 @@
 name: Release
 
 on:
-  push:
-    tags: [ "*" ]
+  workflow_dispatch:
+    inputs:
+      should_create_tag:
+        description: "Create tag"
+        required: false
+        type: boolean
+
+      should_release_on_github:
+        description: "Release on GitHub"
+        required: false
+        type: boolean
+
+      should_release_on_marketplace:
+        description: "Release on Marketplace"
+        required: false
+        type: boolean
 
 env:
   CARGO_TERM_COLOR: always
@@ -76,10 +90,28 @@ jobs:
           name: gitignore-ultimate-vscode-${{ matrix.vscode-platform }}.vsix
           path: gitignore-ultimate-vscode-${{ matrix.vscode-platform }}.vsix
 
-  release-github:
-    name: Release (GitHub)
+  create-tag:
+    name: Create release tag
     needs: package
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create tag
+        if: github.event.inputs.should_create_tag == true
+        run: |
+          version=$(./scripts/get_version.js)
+          git tag -a v$(version)
+          git push -f --tags
+
+  release-github:
+    name: Release (GitHub)
+    needs: create-tag
+    runs-on: ubuntu-latest
+    if: github.event.inputs.should_release_on_github == true
+
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
@@ -101,3 +133,37 @@ jobs:
         with:
           prerelease: true
           files: releases/*
+
+  release-marketplace:
+    name: Release (Marketplace)
+    needs: create-tag
+    runs-on: ubuntu-latest
+    if: github.event.inputs.should_release_on_marketplace == true
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+
+      - name: Copy artifacts
+        run: |
+          mkdir releases
+          for file in artifacts/*/*; do
+            file=${file#artifacts/}
+            folder=${file%%/*}
+            cp -v artifacts/$file releases/$folder
+          done
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: yarn global add vsce
+
+      - name: Release
+        run: |
+          for file in releases/*; do
+            yarn run vsce publish -p ${{ secrets.VSCODE_MARKETPLACE }} --packagePath $file
+          done
