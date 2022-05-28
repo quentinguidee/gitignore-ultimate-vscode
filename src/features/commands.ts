@@ -2,7 +2,7 @@ import { appendFile, existsSync, writeFile } from "fs";
 import { join, relative } from "path";
 import { Uri, window, workspace } from "vscode";
 
-export async function createGitignoreFile(uri: Uri) {
+export function createGitignoreFile(uri: Uri) {
     const path = join(uri.path, ".gitignore");
 
     if (existsSync(path)) {
