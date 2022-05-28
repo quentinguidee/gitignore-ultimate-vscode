@@ -90,30 +90,9 @@ jobs:
           name: gitignore-ultimate-vscode-${{ matrix.vscode-platform }}.vsix
           path: gitignore-ultimate-vscode-${{ matrix.vscode-platform }}.vsix
 
-  create-tag:
-    name: Create release tag
-    needs: package
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get version
-        id: get-version
-        run: echo "::set-output name=VERSION::$(./scripts/get_version.js)"
-
-      - name: Create tag
-        if: ${{ github.event.inputs.should_create_tag }}
-        uses: rickstaa/action-create-tag@v1
-        with:
-          tag: "v${{ steps.get-version.outputs.VERSION }}"
-
   release-github:
     name: Release (GitHub)
-    needs: create-tag
+    needs: package
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.should_release_on_github }}
 
@@ -134,12 +113,13 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: releases/*
 
   release-marketplace:
     name: Release (Marketplace)
-    needs: create-tag
+    needs: package
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.should_release_on_marketplace }}
 
