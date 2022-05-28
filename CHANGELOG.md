@@ -4,7 +4,7 @@
 
 - Separation of the client and the server.
 - Use Rust instead of TypeScript for the [new server](https://github.com/quentinguidee/gitignore-ultimate-server). The extension bundles the server binary for each platforms.
-- Remove useless workspace management.
+- Remove useless workspaces management.
 
 ## [0.1.8] - 2022-05-15
 

@@ -10,10 +10,6 @@
 
 ---
 
-| ⚠️   | This branch is a complete rewrite of the old extension. Consider switching to the [master branch](https://github.com/quentinguidee/gitignore-ultimate/tree/master) if you want to take a look at the extension as it is currently available on the Marketplace. |
-| --- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ↘   | With Gitignore Ultimate 0.2.0, the server is now coded in Rust instead of TypeScript. The server is available [here](https://github.com/quentinguidee/gitignore-ultimate-server)                                                                                |
-
 Ultimate extensions are a group of extensions allowing faster coding in VSCode. Gitignore Ultimate allows to speed up the drafting of `.gitignore` files.
 
 ## Features

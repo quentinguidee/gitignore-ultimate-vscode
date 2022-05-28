@@ -15,6 +15,7 @@
     "keywords": [
         "git",
         "gitignore",
+        "ignore",
         "autocomplete",
         "autocompletion",
         "intellisense",
@@ -24,7 +25,7 @@
         "type": "git",
         "url": "https://github.com/quentinguidee/gitignore-ultimate-vscode"
     },
-    "homepage": "https://github.com/quentinguidee/gitignore-ultimate",
+    "homepage": "https://github.com/quentinguidee/gitignore-ultimate-vscode",
     "icon": "icon.png",
     "main": "./out/extension.js",
     "activationEvents": [

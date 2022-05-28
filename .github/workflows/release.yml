@@ -6,16 +6,19 @@ on:
       should_create_tag:
         description: "Create tag"
         required: false
+        default: true
         type: boolean
 
       should_release_on_github:
         description: "Release on GitHub"
         required: false
+        default: true
         type: boolean
 
       should_release_on_marketplace:
         description: "Release on Marketplace"
         required: false
+        default: true
         type: boolean
 
 jobs:
@@ -95,19 +98,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get version
+        id: get-version
+        run: echo "::set-output name=VERSION::$(./scripts/get_version.js)"
 
       - name: Create tag
-        if: github.event.inputs.should_create_tag == true
-        run: |
-          version=$(./scripts/get_version.js)
-          git tag -a v$(version)
-          git push -f --tags
+        if: ${{ github.event.inputs.should_create_tag }}
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "v${{ steps.get-version.outputs.VERSION }}"
 
   release-github:
     name: Release (GitHub)
     needs: create-tag
     runs-on: ubuntu-latest
-    if: github.event.inputs.should_release_on_github == true
+    if: ${{ github.event.inputs.should_release_on_github }}
 
     steps:
       - name: Download artifacts
@@ -126,18 +134,19 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
-          prerelease: true
           files: releases/*
 
   release-marketplace:
     name: Release (Marketplace)
     needs: create-tag
     runs-on: ubuntu-latest
-    if: github.event.inputs.should_release_on_marketplace == true
+    if: ${{ github.event.inputs.should_release_on_marketplace }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -162,5 +171,5 @@ jobs:
       - name: Release
         run: |
           for file in releases/*; do
-            yarn run vsce publish -p ${{ secrets.VSCODE_MARKETPLACE }} --packagePath $file
+            vsce publish -p ${{ secrets.VSCODE_MARKETPLACE }} --packagePath $file
           done
