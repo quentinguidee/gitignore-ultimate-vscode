@@ -45,3 +45,4 @@ This produces a `.vsix` package that you can install with VSCode. **Note:** this
 ## License
 
 - This extension is released under the [MIT License](./LICENSE.md)
+- The `.vsix` packages are all bundled with [Gitignore Ultimate Server](https://github.com/quentinguidee/gitignore-ultimate-server), also released under the [MIT License](https://github.com/quentinguidee/gitignore-ultimate-server/blob/next/LICENSE.md)
