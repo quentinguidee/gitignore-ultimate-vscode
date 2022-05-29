@@ -67,7 +67,7 @@ jobs:
         run: yarn install
 
       - name: Build
-        run: yarn run vsce package --target ${{ matrix.vscode-platform }} --out gitignore-ultimate-vscode-${{ matrix.vscode-platform }}.vsix
+        run: yarn run vsce package --target ${{ matrix.vscode-platform }} --out gitignore-ultimate-vscode-${{ matrix.vscode-platform }}.vsix --githubBranch main
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
