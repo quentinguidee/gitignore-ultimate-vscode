@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.2] - 2022-05-31
+
+- Fix README.md taking the wrong branch
+
 ## [0.2.1] - 2022-05-31
 
 - Unit tests

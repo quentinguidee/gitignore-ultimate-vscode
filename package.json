@@ -2,7 +2,7 @@
     "name": "gitignore-ultimate",
     "displayName": "Gitignore Ultimate",
     "description": "Your favorite companion to edit gitignore files.",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "preview": true,
     "engines": {
         "vscode": "^1.67.0"
