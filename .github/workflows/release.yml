@@ -2,24 +2,6 @@ name: Release
 
 on:
   workflow_dispatch:
-    inputs:
-      should_create_tag:
-        description: "Create tag"
-        required: false
-        default: true
-        type: boolean
-
-      should_release_on_github:
-        description: "Release on GitHub"
-        required: false
-        default: true
-        type: boolean
-
-      should_release_on_marketplace:
-        description: "Release on Marketplace"
-        required: false
-        default: true
-        type: boolean
 
 jobs:
   package:
@@ -99,7 +81,6 @@ jobs:
     name: Release (GitHub)
     needs: package
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.should_release_on_github }}
 
     steps:
       - name: Download artifacts
@@ -126,7 +107,6 @@ jobs:
     name: Release (Marketplace)
     needs: package
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.should_release_on_marketplace }}
 
     steps:
       - name: Checkout
@@ -156,5 +136,5 @@ jobs:
       - name: Release
         run: |
           for file in releases/*; do
-            vsce publish -p ${{ secrets.VSCODE_MARKETPLACE }} --packagePath $file
+            vsce publish -p ${{ secrets.VSCODE_MARKETPLACE }} --packagePath $file --githubBranch main
           done
