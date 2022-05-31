@@ -81,6 +81,11 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Run tests
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: yarn run test
+
       - name: Build
         run: yarn run vsce package --target ${{ matrix.vscode-platform }} --out gitignore-ultimate-vscode-${{ matrix.vscode-platform }}.vsix --githubBranch main
 
