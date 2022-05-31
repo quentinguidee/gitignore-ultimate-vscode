@@ -1,6 +1,11 @@
 # Changelog
 
-## [0.2.0] - Beta
+## [0.2.1] - 2022-05-31
+
+- Unit tests
+- Improved README.md
+
+## [0.2.0] - 2022-05-29
 
 - Separation of the client and the server.
 - Use Rust instead of TypeScript for the [new server](https://github.com/quentinguidee/gitignore-ultimate-server). The extension bundles the server binary for each platforms.
