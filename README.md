@@ -1,12 +1,7 @@
 <p align="center">
-    <img width="256" height="256" src="https://github.com/quentinguidee/gitignore-ultimate/raw/main/icon-1024.png" />
+    <img src="./icon.png" />
 </p>
 <h1 align="center">Gitignore Ultimate — VSCode</h1>
-
-<p align="center">
-<a src="https://marketplace.visualstudio.com/items?itemName=quentinguidee.gitignore-ultimate&ssr=false#overview"><img alt="Visual Studio Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/quentinguidee.gitignore-ultimate?style=for-the-badge&color=red&logo=visual-studio-code"></a>
-<img alt="GitHub" src="https://img.shields.io/github/license/quentinguidee/gitignore-ultimate?style=for-the-badge&color=red&logo=open-source-initiative&logoColor=white">
-</p>
 
 ---
 
