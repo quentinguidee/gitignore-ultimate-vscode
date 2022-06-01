@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="./icon.png" />
+    <img width="128" height="128" src="https://github.com/quentinguidee/gitignore-ultimate-server/raw/next/assets/gitignore-ultimate-icon-1024.png" />
 </p>
 <h1 align="center">Gitignore Ultimate — VSCode</h1>
 
