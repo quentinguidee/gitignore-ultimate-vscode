@@ -139,39 +139,3 @@ jobs:
           for file in releases/*; do
             vsce publish -p ${{ secrets.VSCODE_MARKETPLACE }} --packagePath $file --githubBranch main
           done
-
-  release-open-vsx:
-    name: Release (Open VSX)
-    needs: package
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          path: artifacts
-
-      - name: Copy artifacts
-        run: |
-          mkdir releases
-          for file in artifacts/*/*; do
-            file=${file#artifacts/}
-            folder=${file%%/*}
-            cp -v artifacts/$file releases/$folder
-          done
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Install dependencies
-        run: yarn global add ovsx
-
-      - name: Release
-        run: |
-          for file in releases/*; do
-            npx ovsx publish -p ${{ secrets.VSIX_MARKETPLACE }} --packagePath $file
-          done
