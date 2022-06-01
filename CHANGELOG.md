@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.0] - 2022-06-01
+
+- (from server) Support `!`, `/` and `!/` in front of paths
+
 ## [0.2.3] - 2022-06-01
 
 - Use new Ultimate icons.
